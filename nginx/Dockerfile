@@ -1,6 +1,3 @@
-#
-# Dockerfile for building Nginx images
-# 
 FROM centos:centos7
 MAINTAINER dodo <lhuibo@gmail.com>
 

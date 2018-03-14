@@ -1,7 +1,6 @@
 #
 # Dockerfile for building v2ray images
 # 
-
 FROM v2ray/official
 MAINTAINER zxk114 <zxk114@126.com>
 
@@ -10,7 +9,6 @@ ENV TZ "Asia/Shanghai"
 RUN yum -y update && \
     yum install -y unzip && \
     yum clean all
-
 
 RUN rm -f /etc/localtime \
 	&& ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \

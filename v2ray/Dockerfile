@@ -1,28 +1,20 @@
-#
-# Dockerfile for building v2ray images
-# 
-FROM v2ray/official
-MAINTAINER zxk114 <zxk114@126.com>
+FROM alpine:latest
 
-ENV TZ "Asia/Shanghai"
+LABEL maintainer "Darian Raymond <admin@v2ray.com>"
 
-RUN yum -y update && \
-    yum install -y unzip && \
-    yum clean all
+ADD https://storage.googleapis.com/v2ray-docker/v2ray /usr/bin/v2ray/
+ADD https://storage.googleapis.com/v2ray-docker/v2ctl /usr/bin/v2ray/
+ADD https://storage.googleapis.com/v2ray-docker/geoip.dat /usr/bin/v2ray/
+ADD https://storage.googleapis.com/v2ray-docker/geosite.dat /usr/bin/v2ray/
 
-RUN rm -f /etc/localtime \
-	&& ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-	&& date -R \
-	&& bash <(curl -L -s https://install.direct/go.sh) \
-    && mkdir /var/log/v2ray \
-	&& mkdir /etc/v2ray \
-	&& chmod 777 /usr/bin/v2ray/v2ray \
-	&& chmod -R 777 /var/log/v2ray \
-	&& chmod -R 777 /etc/v2ray \
+COPY config.json /etc/v2ray/config.json
 
-ADD conf/config.json /etc/v2ray/
+RUN set -ex && \
+    apk --no-cache add ca-certificates && \
+    mkdir /var/log/v2ray/ &&\
+    chmod +x /usr/bin/v2ray/v2ctl && \
+    chmod +x /usr/bin/v2ray/v2ray
 
-EXPOSE 12580
+ENV PATH /usr/bin/v2ray:$PATH
 
-#启动nginx
-ENTRYPOINT ["/usr/local/bin/v2ray", "-g", "daemon off;"]
+CMD ["v2ray", "-config=/etc/v2ray/config.json"]

@@ -1,9 +1,6 @@
 #
 # Dockerfile for building Nginx images
 # 
-# https://github.com/addcn/docker-lnmp.git
-#
-
 FROM centos:centos7
 MAINTAINER dodo <lhuibo@gmail.com>
 
